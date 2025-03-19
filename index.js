@@ -89,32 +89,24 @@ function convertTimeToWords(time) {
   } 
 
   // seprate hour and minute
-  const hour = Number(time.split(":")[0])
-  const minute = Number(time.split(":")[1])
+  const [hourStr, minuteStr] = time.split(":")
+  const hour = Number(hourStr)
+  const minute = Number(minuteStr)
 
-  console.log("Hour:", hour)
-  console.log("Minutes:", minute)
-
-  // divide by half (30)
   if (minute == 0) {
-    return `${hour} ${minuteLookUp.minute}`
+    return `${hourLookUp[hour]} ${minuteLookUp[minute]}`
   } else if (minute == 45 || minute == 15) {
-    console.log("here")
     const pointingHour = minute == 45 ? `to ${hourLookUp[hour + 1]}` : `past ${hourLookUp[hour]}`
     return `quarter ${pointingHour}`
   } else if (minute > 30) {
-    // count the remaining minutes
-    console.log("here")
     const remainingMinute = 60 - minute
-    return `${minuteLookUp[remainingMinute]} to ${hourLookUp[hour + 1]}`
+    const nextHour = hour === 12 ? 1 : hour + 1
+    return `${minuteLookUp[remainingMinute]} to ${hourLookUp[nextHour]}`
   } else if (minute < 30) {
-    // count the remaining minutes
     return `${minuteLookUp[minute]} past ${hourLookUp[hour]}`
+  } else {
+    return `half past ${hourLookUp[hour]}`
   }
-
-  return 'half past eight';
 }
-
-convertTimeToWords('2:33')
 
 module.exports = { convertTimeToWords };
